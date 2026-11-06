@@ -23,11 +23,13 @@ def evaluate_model(log, model):
         depth = max_gateway_depth(pm4py.convert_to_process_tree(net, im, fm))
     except ValueError:  # net is not block-structured, so it has no nesting depth
         depth = float('nan')
+    fitness = pm4py.fitness_token_based_replay(log, net, im, fm)
     return {
-        'Fitness': pm4py.fitness_token_based_replay(log, net, im, fm)['log_fitness'],
+        'Fitness': fitness['log_fitness'],
+        'Perfect_Fit_Share': fitness['perc_fit_traces'] / 100,
         'Precision': pm4py.precision_token_based_replay(log, net, im, fm),
         'Generalization': pm4py.generalization_tbr(log, net, im, fm),
-        'Simplicity': pm4py.simplicity_petri_net(net, im, fm, variant="arc-degree"),
+        'Simplicity': pm4py.simplicity_petri_net(net, im, fm, variant="arc_degree"),
         'Simplicity_NodeDegree': max_node_degree(net),
         'Simplicity_Depth': depth,
     }
