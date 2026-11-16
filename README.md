@@ -7,7 +7,7 @@ The loan application process of the [BPI Challenge 2017](https://ais.win.tue.nl/
 
 ```
 analysis/                  Notebooks (run in this order) and shared helper modules
-  00_data_exploration        Basic statistics of the log (Table 1)
+  00_data_exploration        Converts the XES log to CSV, basic statistics of the log (Table 1)
   01_process_discovery       DFG and Inductive Miner on the unfiltered log (Table 2, columns DFG / Ind. Miner)
   02_process_model_improvement  Filtering, Inductive Miner on the filtered log, evaluation of the final model (Table 2, column Final)
   03_decision_mining         Decision points, alignments, decision trees, annotated BPMN
@@ -15,7 +15,7 @@ analysis/                  Notebooks (run in this order) and shared helper modul
   preprocessing.py           Loads the CSV log; build_log_base() applies the event filter
   evaluation.py              Quality metrics (fitness, precision, generalization, simplicity, max node degree, max depth)
   evaluate_bpmn.py           CLI: evaluates a BPMN file, additionally with alignment-based fitness and precision
-data/                      BPIC-17 event log as XES (original) and CSV (same events, faster to load)
+data/                      BPIC-17 event log (git-ignored, see Setup): the downloaded XES and the CSV created from it
 process_model/             Final process model (BPMN + SVG) and its manually laid out annotated version
 output/                    Generated files (git-ignored): intermediate models, alignment caches, figures
 ```
@@ -29,6 +29,19 @@ python3.12 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+### Event log
+
+The event log is not part of the repository because of its size (about 550 MB unpacked).
+
+1. Download the [BPIC 2017 event log](https://data.4tu.nl/articles/_/12696884/1)
+2. Unpack it and save it as `data/bpic2017.xes`:
+   ```bash
+   gunzip -c "BPI Challenge 2017.xes.gz" > data/bpic2017.xes
+   ```
+3. Run `analysis/00_data_exploration.ipynb` first. It reads the XES file and writes `data/bpic2017.csv`, which all later notebooks load because it is much faster to read.
+
+### Running the analysis
 
 Run the notebooks from the `analysis/` folder in numerical order, with the `.venv` kernel.
 

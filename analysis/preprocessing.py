@@ -6,6 +6,8 @@ DATA_PATH = Path(__file__).resolve().parent.parent / 'data' / 'bpic2017.csv'
 
 
 def load_raw_log():
+    if not DATA_PATH.exists():
+        raise FileNotFoundError(f'{DATA_PATH} not found. Run 00_data_exploration.ipynb first, it creates the CSV from the XES log.')
     df = pd.read_csv(DATA_PATH, low_memory=False)
     df['time:timestamp'] = pd.to_datetime(df['time:timestamp'], format='ISO8601')
     return df.sort_values(['case:concept:name', 'time:timestamp'], kind='stable').reset_index(drop=True)
