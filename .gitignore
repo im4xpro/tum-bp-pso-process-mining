@@ -1,4 +1,9 @@
 .DS_Store
 .venv
-output/*
 __pycache__/
+
+output/*
+!output/.gitkeep
+!output/figures/
+output/figures/*
+!output/figures/.gitkeep
