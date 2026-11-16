@@ -11,7 +11,7 @@ from preprocessing import build_log_base, load_raw_log
 
 warnings.filterwarnings('ignore')
 
-DEFAULT_MODEL = Path(__file__).resolve().parent.parent / 'data' / '02_process_model.bpmn'
+DEFAULT_MODEL = Path(__file__).resolve().parent.parent / 'process_model' / 'final_model.bpmn'
 
 
 def evaluate_bpmn(path, log_base, raw):
@@ -27,7 +27,7 @@ def evaluate_bpmn(path, log_base, raw):
     if duplicates:
         print(f'Duplicate activities: {duplicates}. Token replay is unreliable on these, compare with the alignment values.')
 
-    # Same metrics and log as the iterations in runs/, so the scores are directly comparable
+    # Same metrics and log as in 02_process_model_improvement, plus alignment-based fitness and precision
     metrics = evaluate_model(log_base, (net, im, fm))
     alignment_fitness = pm4py.fitness_alignments(log_base, net, im, fm, multi_processing=True)
     metrics['Fitness (alignments)'] = alignment_fitness['log_fitness']
